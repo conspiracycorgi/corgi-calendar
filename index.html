@@ -10,6 +10,21 @@ excerpt: Track your corgi's mood and behavior patterns with our lunar cycle cale
     <p class="hero-description">Discover how the lunar cycle influences your corgi's mood and behavior</p>
   </section>
   
+  <section class="intro-section">
+    <div class="intro-card">
+      <h2>How to Use This Calendar</h2>
+      <p>The Corgi Consciousness Calendar tracks lunar cycles to predict your corgi's mood and energy levels. Each day shows:</p>
+      <ul class="intro-list">
+        <li><strong>Gregorian Date (G#):</strong> Standard calendar date</li>
+        <li><strong>Lunar Date (L#):</strong> Day in the 28-day lunar cycle</li>
+        <li><strong>Mood:</strong> Your corgi's predicted mood based on lunar phase</li>
+        <li><strong>Activity:</strong> Suggested activities that match your corgi's energy level</li>
+        <li><strong>Moon Phase:</strong> Current phase of the moon</li>
+      </ul>
+      <p>Special moon days (New Moon, First Quarter, Full Moon, Last Quarter) are highlighted with an orange border.</p>
+    </div>
+  </section>
+
   <section class="calendar-section" aria-labelledby="calendar-heading">
     <h2 id="calendar-heading" class="visually-hidden">Lunar Calendar</h2>
     <div class="calendar-container">
@@ -92,4 +107,25 @@ excerpt: Track your corgi's mood and behavior patterns with our lunar cycle cale
     <p>Use this calendar to plan activities that align with your corgi's natural energy levels, creating a more harmonious relationship and enhancing your corgi's well-being.</p>
   </section>
 </div>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Event",
+  "name": "Corgi Lunar Calendar",
+  "startDate": "2025-03-29",
+  "endDate": "2026-03-28",
+  "description": "A lunar calendar for tracking your corgi's mood based on the lunar cycle",
+  "location": {
+    "@type": "VirtualLocation",
+    "url": "{{ site.url }}{{ site.baseurl }}"
+  },
+  "organizer": {
+    "@type": "Person",
+    "name": "{{ site.author }}"
+  },
+  "eventStatus": "https://schema.org/EventScheduled",
+  "eventAttendanceMode": "https://schema.org/OnlineEventAttendanceMode"
+}
+</script>
 
