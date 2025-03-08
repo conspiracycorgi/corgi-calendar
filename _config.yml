@@ -1,20 +1,33 @@
 # Site settings
 title: Corgi Consciousness Calendar
-description: Track your corgi's mood with the lunar cycle
-baseurl: "/corgi-calendar" # Updated to match GitHub Pages repository name
-url: "https://conspiracycorgi.github.io" # Updated to GitHub Pages URL
+description: "Track your corgi's mood and behavior patterns with our lunar cycle calendar. Get personalized activity suggestions based on lunar phases."
+baseurl: "/corgi-calendar"
+url: "https://conspiracycorgi.github.io"
+author: ConspiracyCorgi
+lang: en
+
+# SEO settings
+twitter:
+  username: conspiracycorgi
+  card: summary_large_image
+logo: /assets/images/corgi-logo.png
+social:
+  name: Corgi Consciousness Calendar
+  links:
+    - https://github.com/conspiracycorgi/corgi-calendar
 
 # Build settings
 markdown: kramdown
 plugins:
-- jekyll-feed
-- jekyll-seo-tag
+  - jekyll-feed
+  - jekyll-seo-tag
+  - jekyll-sitemap
 
 # Exclude from processing
 exclude:
-- Gemfile
-- Gemfile.lock
-- node_modules
-- vendor
-- .gitignore
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - vendor
+  - .gitignore
 
