@@ -5,8 +5,9 @@ baseurl: "/corgi-calendar"
 url: "https://conspiracycorgi.github.io"
 author: ConspiracyCorgi
 lang: en
+timezone: UTC
 
-# SEO settings
+# Enhanced SEO settings
 twitter:
   username: conspiracycorgi
   card: summary_large_image
@@ -15,6 +16,14 @@ social:
   name: Corgi Consciousness Calendar
   links:
     - https://github.com/conspiracycorgi/corgi-calendar
+    - https://twitter.com/conspiracycorgi
+
+# Analytics
+google_analytics: # Add your Google Analytics ID here
+
+# Additional metadata
+keywords: corgi, lunar calendar, pet behavior, moon phases, dog activities
+locale: en_US
 
 # Build settings
 markdown: kramdown
@@ -30,4 +39,5 @@ exclude:
   - node_modules
   - vendor
   - .gitignore
+  - README.md
 
