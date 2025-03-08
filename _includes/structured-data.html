@@ -1,0 +1,43 @@
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "{{ site.title }}",
+  "description": "{{ site.description }}",
+  "url": "{{ site.url }}{{ site.baseurl }}",
+  "applicationCategory": "LifestyleApplication",
+  "operatingSystem": "Web",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "author": {
+    "@type": "Person",
+    "name": "{{ site.author }}"
+  },
+  "potentialAction": {
+    "@type": "UseAction",
+    "target": "{{ site.url }}{{ site.baseurl }}"
+  }
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [{
+    "@type": "ListItem",
+    "position": 1,
+    "name": "Home",
+    "item": "{{ site.url }}{{ site.baseurl }}"
+  },{
+    "@type": "ListItem",
+    "position": 2,
+    "name": "Corgi Calendar",
+    "item": "{{ site.url }}{{ site.baseurl }}"
+  }]
+}
+</script>
+
