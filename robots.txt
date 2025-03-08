@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://conspiracycorgi.github.io/corgi-calendar/sitemap.xml
+
