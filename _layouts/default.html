@@ -7,9 +7,32 @@
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{{ '/assets/css/styles.css' | relative_url }}">
   <meta name="description" content="{{ site.description }}">
+  <!-- Ensure CSS is loaded before content -->
+  <style>
+    .loading {
+      display: none;
+    }
+    .loaded {
+      display: block;
+      animation: fadeIn 0.5s ease-in;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+  </style>
 </head>
 <body>
-  {{ content }}
+  <div id="content" class="loading">
+    {{ content }}
+  </div>
+  <script>
+    // Ensure content is shown only after CSS is loaded
+    window.addEventListener('load', function() {
+      document.getElementById('content').classList.remove('loading');
+      document.getElementById('content').classList.add('loaded');
+    });
+  </script>
   <script src="{{ '/assets/js/calendar.js' | relative_url }}"></script>
 </body>
 </html>
