@@ -1,44 +1,95 @@
 ---
 layout: default
+title: Corgi Consciousness Calendar
+excerpt: Track your corgi's mood and behavior patterns with our lunar cycle calendar. Get personalized activity suggestions based on lunar phases.
 ---
 
-<main class="min-h-screen p-4 md:p-8 lg:p-12">
-  <div class="max-w-7xl">
+<div class="container">
+  <section class="hero-section">
     <h1>Corgi Consciousness Calendar</h1>
-    <div class="w-full">
-      <div id="calendar-container" class="calendar-container">
-        <div class="calendar-header">
-          <h2 id="lunar-month-year" class="lunar-month-year">
-            Corgi Month 1, Year 1
-          </h2>
-          <div class="nav-buttons">
-            <button id="prev-month" class="button-outline" aria-label="Previous month">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="m15 18-6-6 6-6"/>
-              </svg>
-            </button>
-            <button id="next-month" class="button-outline" aria-label="Next month">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="m9 18 6-6-6-6"/>
-              </svg>
-            </button>
-          </div>
-        </div>
-
-        <div id="day-headers" class="calendar-grid mb-4">
-          <!-- Day headers will be inserted here by JavaScript -->
-        </div>
-
-        <div id="calendar-days" class="calendar-grid">
-          <!-- Calendar days will be inserted here by JavaScript -->
+    <p class="hero-description">Discover how the lunar cycle influences your corgi's mood and behavior</p>
+  </section>
+  
+  <section class="calendar-section" aria-labelledby="calendar-heading">
+    <h2 id="calendar-heading" class="visually-hidden">Lunar Calendar</h2>
+    <div class="calendar-container">
+      <div class="calendar-header">
+        <h2 id="lunar-month-year" class="lunar-month-year">Corgi Month 1, Year 1</h2>
+        <div class="nav-buttons">
+          <button id="prev-month" class="button-nav" aria-label="Previous month">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="m15 18-6-6 6-6"/>
+            </svg>
+          </button>
+          <button id="next-month" class="button-nav" aria-label="Next month">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="m9 18 6-6-6-6"/>
+            </svg>
+          </button>
         </div>
       </div>
-
-      {% include calendar_legend.html %}
+      
+      <div id="day-headers" class="calendar-grid" aria-hidden="true"></div>
+      <div id="calendar-days" class="calendar-grid" role="grid" aria-label="Corgi Lunar Calendar"></div>
     </div>
-    <footer class="footer">
-      <p>Track your corgi's mood with the lunar cycle</p>
-    </footer>
-  </div>
-</main>
+  </section>
+  
+  <section class="legend-section" aria-labelledby="legend-heading">
+    <h2 id="legend-heading" class="visually-hidden">Calendar Legend</h2>
+    <div class="calendar-legend">
+      <h3 class="legend-title">Corgi Consciousness Legend</h3>
+      <div class="legend-grid">
+        <div class="legend-section">
+          <h4 class="legend-section-title">Moon Phases</h4>
+          <div class="moon-phases-grid">
+            <div class="moon-phase-item">
+              <span class="moon-emoji" aria-hidden="true">🌑</span>
+              <span>New Moon (L1)</span>
+            </div>
+            <div class="moon-phase-item">
+              <span class="moon-emoji" aria-hidden="true">🌓</span>
+              <span>First Quarter (L8)</span>
+            </div>
+            <div class="moon-phase-item">
+              <span class="moon-emoji" aria-hidden="true">🌕</span>
+              <span>Full Moon (L15)</span>
+            </div>
+            <div class="moon-phase-item">
+              <span class="moon-emoji" aria-hidden="true">🌗</span>
+              <span>Last Quarter (L22)</span>
+            </div>
+          </div>
+        </div>
+        <div class="legend-section">
+          <h4 class="legend-section-title">Corgi Consciousness</h4>
+          <p class="consciousness-text">The lunar cycle influences your corgi's energy, mood, and behavior patterns in fascinating ways.</p>
+          <div class="consciousness-grid">
+            <div class="consciousness-item">
+              <p class="consciousness-phase">New Moon:</p>
+              <p class="consciousness-description">Corgis are adventurous and ready to explore new experiences</p>
+            </div>
+            <div class="consciousness-item">
+              <p class="consciousness-phase">First Quarter:</p>
+              <p class="consciousness-description">Corgis are playful and socially engaged with high energy</p>
+            </div>
+            <div class="consciousness-item">
+              <p class="consciousness-phase">Full Moon:</p>
+              <p class="consciousness-description">Corgis are peaceful and receptive to gentle affection</p>
+            </div>
+            <div class="consciousness-item">
+              <p class="consciousness-phase">Last Quarter:</p>
+              <p class="consciousness-description">Corgis are thoughtful and benefit from mental stimulation</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <section class="about-section" aria-labelledby="about-heading">
+    <h2 id="about-heading">About the Corgi Consciousness Calendar</h2>
+    <p>The Corgi Consciousness Calendar is a unique tool designed to help corgi owners understand and anticipate their pet's moods and energy levels based on lunar cycles. Just as the moon affects tides and natural rhythms, it can influence your corgi's behavior patterns.</p>
+    <p>Use this calendar to plan activities that align with your corgi's natural energy levels, creating a more harmonious relationship and enhancing your corgi's well-being.</p>
+  </section>
+</div>
 
