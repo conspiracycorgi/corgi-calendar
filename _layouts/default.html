@@ -5,35 +5,771 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{{ site.title }}</title>
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="{{ '/assets/css/styles.css' | relative_url }}">
   <meta name="description" content="{{ site.description }}">
-  <!-- Ensure CSS is loaded before content -->
+  <!-- Embed CSS directly to avoid path issues -->
+  <link rel="stylesheet" href="{{ site.baseurl }}/assets/css/styles.css">
   <style>
-    .loading {
-      display: none;
+    /* Base styles */
+    body {
+      font-family: "Nunito", sans-serif;
+      background: linear-gradient(to bottom, #1a1a1a, #0a0a0a);
+      color: #ffffff;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
     }
-    .loaded {
-      display: block;
-      animation: fadeIn 0.5s ease-in;
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem 1rem;
     }
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
+    
+    h1 {
+      font-size: 2.5rem;
+      text-align: center;
+      margin-bottom: 2rem;
+      background: linear-gradient(to right, #fdba74, #f97316);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      font-weight: 800;
+    }
+    
+    /* Calendar container */
+    .calendar-container {
+      background-color: #1a1a1a;
+      border-radius: 0.75rem;
+      padding: 1.5rem;
+      border: 4px solid #fb923c;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+      margin-bottom: 2rem;
+    }
+    
+    /* Calendar header */
+    .calendar-header {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 2rem;
+    }
+    
+    @media (min-width: 640px) {
+      .calendar-header {
+        flex-direction: row;
+        justify-content: space-between;
+      }
+    }
+    
+    .lunar-month-year {
+      font-size: 1.875rem;
+      font-weight: 700;
+      color: #fdba74;
+      margin: 0 0 1rem 0;
+    }
+    
+    @media (min-width: 640px) {
+      .lunar-month-year {
+        margin: 0;
+      }
+    }
+    
+    /* Navigation buttons */
+    .nav-buttons {
+      display: flex;
+      gap: 1rem;
+    }
+    
+    .button-nav {
+      height: 3rem;
+      width: 3rem;
+      border-radius: 9999px;
+      border: 2px solid #fb923c;
+      background-color: transparent;
+      color: #ffffff;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+    }
+    
+    .button-nav:hover {
+      background-color: rgba(251, 146, 60, 0.2);
+    }
+    
+    /* Calendar grid */
+    .calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 0.75rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    /* Day headers */
+    .day-header {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    
+    .day-header-image {
+      width: 60px;
+      height: 60px;
+      margin-bottom: 0.5rem;
+      object-fit: contain;
+    }
+    
+    .day-name {
+      font-weight: 700;
+      color: #fdba74;
+    }
+    
+    /* Calendar day */
+    .calendar-day {
+      background-color: #1f2937;
+      border-radius: 0.75rem;
+      min-height: 160px;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid #374151;
+      transition: all 0.25s ease;
+    }
+    
+    .calendar-day:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      border-color: rgba(251, 146, 60, 0.5);
+    }
+    
+    .special-moon-day {
+      background-image: linear-gradient(to bottom right, #1f2937, #1f2937, #111827);
+      border: 2px solid #fb923c;
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2), 0 4px 6px -2px rgba(0, 0, 0, 0.1);
+    }
+    
+    /* Day header */
+    .day-date-header {
+      background-color: rgba(17, 24, 39, 0.6);
+      padding: 0.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .gregorian-date {
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .weekday {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: #fdba74;
+    }
+    
+    .day-number {
+      font-size: 1.125rem;
+      font-weight: 700;
+      color: #ffffff;
+    }
+    
+    .lunar-date {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+    }
+    
+    .month-name {
+      font-size: 0.75rem;
+      color: rgba(254, 215, 170, 0.8);
+    }
+    
+    .lunar-day {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #fb923c;
+    }
+    
+    /* Day content */
+    .day-content {
+      padding: 0.5rem;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+    }
+    
+    .mood-section {
+      margin-top: 0.5rem;
+      text-align: center;
+    }
+    
+    .section-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #9ca3af;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    
+    .mood-text {
+      font-size: 0.875rem;
+      font-weight: 700;
+      color: #fdba74;
+    }
+    
+    .activity-suggestion {
+      margin-top: 0.25rem;
+      transition: opacity 0.3s ease;
+    }
+    
+    .activity-text {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: #ffffff;
+    }
+    
+    /* Moon phase */
+    .moon-phase {
+      margin-top: auto;
+      display: flex;
+      justify-content: center;
+      padding: 0.5rem 0;
+    }
+    
+    .moon-phase-inner {
+      background-color: rgba(17, 24, 39, 0.3);
+      padding: 0.25rem 0.75rem;
+      border-radius: 9999px;
+    }
+    
+    .moon-emoji {
+      font-size: 1.5rem;
+    }
+    
+    /* Special indicator */
+    .special-indicator {
+      position: absolute;
+      top: -0.25rem;
+      right: -0.25rem;
+      width: 1rem;
+      height: 1rem;
+      background-color: #fb923c;
+      border-radius: 9999px;
+      animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+    
+    /* Legend */
+    .calendar-legend {
+      background-color: #1f2937;
+      border-radius: 0.75rem;
+      padding: 1.5rem;
+      border: 2px solid #fb923c;
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    }
+    
+    .legend-title {
+      font-size: 1.5rem;
+      color: #fdba74;
+      margin-bottom: 1rem;
+      font-weight: 700;
+    }
+    
+    .legend-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+    
+    @media (min-width: 768px) {
+      .legend-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    
+    .legend-section {
+      background-color: rgba(17, 24, 39, 0.5);
+      padding: 1rem;
+      border-radius: 0.5rem;
+    }
+    
+    .legend-section-title {
+      font-size: 1.25rem;
+      color: #ffffff;
+      margin-bottom: 0.75rem;
+      font-weight: 600;
+    }
+    
+    .moon-phases-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+    }
+    
+    .moon-phase-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      background-color: rgba(31, 41, 55, 0.5);
+      padding: 0.5rem;
+      border-radius: 0.375rem;
+    }
+    
+    .consciousness-text {
+      color: #e5e7eb;
+      margin-bottom: 0.75rem;
+    }
+    
+    .consciousness-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0.75rem;
+    }
+    
+    @media (min-width: 640px) {
+      .consciousness-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    
+    .consciousness-item {
+      background-color: rgba(31, 41, 55, 0.5);
+      padding: 0.5rem;
+      border-radius: 0.375rem;
+    }
+    
+    .consciousness-phase {
+      color: #fdba74;
+      font-weight: 500;
+      margin-bottom: 0.25rem;
+    }
+    
+    .consciousness-description {
+      color: #e5e7eb;
+    }
+    
+    /* Footer */
+    .footer {
+      text-align: center;
+      color: #6b7280;
+      font-size: 0.875rem;
+      margin-top: 2rem;
+    }
+    
+    /* Animations */
+    @keyframes wiggle {
+      0%, 100% { transform: rotate(-3deg); }
+      50% { transform: rotate(3deg); }
+    }
+    
+    .animate-wiggle {
+      animation: wiggle 1s ease-in-out infinite;
+    }
+    
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+    
+    .animate-pulse {
+      animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
     }
   </style>
 </head>
 <body>
-  <div id="content" class="loading">
-    {{ content }}
-  </div>
+  {{ content }}
   <script>
-    // Ensure content is shown only after CSS is loaded
-    window.addEventListener('load', function() {
-      document.getElementById('content').classList.remove('loading');
-      document.getElementById('content').classList.add('loaded');
+    document.addEventListener("DOMContentLoaded", function() {
+      // Constants and configuration
+      const START_DATE = new Date(2025, 2, 29); // March 29, 2025
+      let currentDate = new Date(START_DATE);
+
+      // Day images for each day of the week
+      const dayImages = [
+  {
+    day: "Sat",
+    image: "{{ site.baseurl }}/assets/images/saturday corgi.png"
+  },
+  {
+    day: "Sun",
+    image: "{{ site.baseurl }}/assets/images/sunday corgi.png"
+  },
+  {
+    day: "Mon",
+    image: "{{ site.baseurl }}/assets/images/monday corgi.png"
+  },
+  {
+    day: "Tue",
+    image: "{{ site.baseurl }}/assets/images/tuesday corgi.png"
+  },
+  {
+    day: "Wed",
+    image: "{{ site.baseurl }}/assets/images/wednesday corgi.png"
+  },
+  {
+    day: "Thu",
+    image: "{{ site.baseurl }}/assets/images/thursday corgi.png"
+  },
+  {
+    day: "Fri",
+    image: "{{ site.baseurl }}/assets/images/friday corgi.png"
+  }
+];
+
+      // DOM elements
+      const prevMonthButton = document.getElementById("prev-month");
+      const nextMonthButton = document.getElementById("next-month");
+      const lunarMonthYearElement = document.getElementById("lunar-month-year");
+      const dayHeadersContainer = document.getElementById("day-headers");
+      const calendarDaysContainer = document.getElementById("calendar-days");
+
+      // Event listeners
+      prevMonthButton.addEventListener("click", handlePrevMonth);
+      nextMonthButton.addEventListener("click", handleNextMonth);
+
+      // Initialize the calendar
+      renderDayHeaders();
+      renderCalendar();
+
+      // Functions
+      function handlePrevMonth() {
+        currentDate = addDays(currentDate, -28);
+        renderCalendar();
+      }
+
+      function handleNextMonth() {
+        currentDate = addDays(currentDate, 28);
+        renderCalendar();
+      }
+
+      function renderDayHeaders() {
+        dayHeadersContainer.innerHTML = "";
+
+        dayImages.forEach((dayInfo) => {
+          const headerElement = document.createElement("div");
+          headerElement.className = "day-header";
+          headerElement.innerHTML = `
+            <img src="${dayInfo.image}" alt="${dayInfo.day}" class="day-header-image">
+            <div class="day-name">${dayInfo.day}</div>
+          `;
+          dayHeadersContainer.appendChild(headerElement);
+        });
+      }
+
+      function renderCalendar() {
+        // Update lunar month and year
+        const lunarMonthYear = getLunarMonthYear(currentDate);
+        lunarMonthYearElement.textContent = lunarMonthYear;
+
+        // Clear and render calendar days
+        calendarDaysContainer.innerHTML = "";
+
+        const weekStart = startOfWeek(currentDate);
+
+        for (let i = 0; i < 28; i++) {
+          const currentDay = addDays(weekStart, i);
+          const lunarDay = (i % 28) + 1;
+
+          const dayElement = createCalendarDay(currentDay, lunarDay);
+          calendarDaysContainer.appendChild(dayElement);
+        }
+      }
+
+      function createCalendarDay(gregorianDate, lunarDay) {
+        // Determine if this is a special moon day
+        const isSpecialMoonDay = lunarDay === 1 || lunarDay === 8 || lunarDay === 15 || lunarDay === 22;
+
+        // Get corgi mood and activity suggestion
+        const corgiMood = getCorgiMood(lunarDay);
+        const activitySuggestion = getActivitySuggestion(lunarDay);
+
+        // Get moon phase
+        const moonPhase = getMoonPhase(lunarDay);
+
+        // Create day element
+        const dayElement = document.createElement("div");
+        dayElement.className = `calendar-day ${isSpecialMoonDay ? "special-moon-day" : ""}`;
+
+        // Add hover event for non-special days to show activity
+        if (!isSpecialMoonDay) {
+          dayElement.addEventListener("mouseenter", function() {
+            const activityElement = this.querySelector(".activity-suggestion");
+            if (activityElement) {
+              activityElement.style.opacity = "1";
+            }
+          });
+
+          dayElement.addEventListener("mouseleave", function() {
+            const activityElement = this.querySelector(".activity-suggestion");
+            if (activityElement) {
+              activityElement.style.opacity = "0";
+            }
+          });
+        }
+
+        dayElement.innerHTML = `
+          <!-- Day header with dates -->
+          <div class="day-date-header">
+            <div class="gregorian-date">
+              <span class="weekday">${formatDate(gregorianDate, "EEE")}</span>
+              <span class="day-number">G${formatDate(gregorianDate, "d")}</span>
+            </div>
+            <div class="lunar-date">
+              <span class="month-name">${formatDate(gregorianDate, "MMM")}</span>
+              <span class="lunar-day">L${lunarDay}</span>
+            </div>
+          </div>
+
+          <!-- Day content -->
+          <div class="day-content">
+            <!-- Corgi mood -->
+            <div class="mood-section">
+              <div class="section-label">Corgi Mood</div>
+              <div class="mood-text">${corgiMood}</div>
+            </div>
+
+            <!-- Activity suggestion -->
+            <div class="activity-suggestion" style="opacity: ${isSpecialMoonDay ? '1' : '0'}">
+              <div class="section-label">Activity</div>
+              <div class="activity-text">${activitySuggestion}</div>
+            </div>
+
+            <!-- Moon phase -->
+            <div class="moon-phase">
+              <div class="moon-phase-inner">
+                <span class="moon-emoji ${isSpecialMoonDay ? 'animate-wiggle' : ''}">${moonPhase}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Special indicator -->
+          ${isSpecialMoonDay ? '<div class="special-indicator"></div>' : ''}
+        `;
+
+        return dayElement;
+      }
+
+      // Helper functions
+      function getLunarMonthYear(date) {
+        const daysSinceStart = Math.floor((date.getTime() - START_DATE.getTime()) / (1000 * 60 * 60 * 24));
+        const lunarMonth = (Math.floor(daysSinceStart / 28) % 13) + 1;
+        const lunarYear = Math.floor(daysSinceStart / (28 * 13)) + 1;
+        return `Corgi Month ${lunarMonth}, Year ${lunarYear}`;
+      }
+
+      function getMoonPhase(day) {
+        if (day === 1) return "🌑"; // New Moon
+        if (day < 8) return "🌒"; // Waxing Crescent
+        if (day === 8) return "🌓"; // First Quarter
+        if (day < 15) return "🌔"; // Waxing Gibbous
+        if (day === 15) return "🌕"; // Full Moon
+        if (day < 22) return "🌖"; // Waning Gibbous
+        if (day === 22) return "🌗"; // Last Quarter
+        return "🌘"; // Waning Crescent
+      }
+
+      // Enhanced corgi mood function with more variations
+      function getCorgiMood(day) {
+        // Define mood categories based on lunar phases
+        const newMoonMoods = [
+          "Adventurous & Bold",
+          "Excitedly Curious",
+          "Ready to Explore",
+          "Boundlessly Energetic",
+          "Playfully Mischievous"
+        ];
+
+        const waxingCrescentMoods = [
+          "Energetically Hopeful",
+          "Bright & Bouncy",
+          "Eagerly Attentive",
+          "Spirited & Lively",
+          "Cheerfully Active"
+        ];
+
+        const firstQuarterMoods = [
+          "Playfully Social",
+          "Enthusiastically Engaged",
+          "Joyfully Interactive",
+          "Happily Frisky",
+          "Delightfully Animated"
+        ];
+
+        const waxingGibbousMoods = [
+          "Curiously Inquisitive",
+          "Actively Exploring",
+          "Intently Focused",
+          "Keenly Observant",
+          "Thoughtfully Engaged"
+        ];
+
+        const fullMoonMoods = [
+          "Peacefully Relaxed",
+          "Contentedly Calm",
+          "Serenely Balanced",
+          "Blissfully Tranquil",
+          "Harmoniously Centered"
+        ];
+
+        const waningGibbousMoods = [
+          "Dreamily Reflective",
+          "Softly Contemplative",
+          "Gently Pensive",
+          "Quietly Thoughtful",
+          "Calmly Introspective"
+        ];
+
+        const lastQuarterMoods = [
+          "Thoughtfully Wise",
+          "Insightfully Calm",
+          "Deeply Observant",
+          "Mindfully Present",
+          "Sagely Perceptive"
+        ];
+
+        const waningCrescentMoods = [
+          "Restfully Serene",
+          "Peacefully Quiet",
+          "Gently Recharging",
+          "Softly Recuperating",
+          "Calmly Renewing"
+        ];
+
+        // Get a random mood from the appropriate category based on lunar day
+        const getRandomMood = (moodArray) => {
+          const randomIndex = Math.floor(Math.random() * moodArray.length);
+          return moodArray[randomIndex];
+        };
+
+        // Return a mood based on the lunar day
+        if (day === 1) return getRandomMood(newMoonMoods);
+        if (day < 8) return getRandomMood(waxingCrescentMoods);
+        if (day === 8) return getRandomMood(firstQuarterMoods);
+        if (day < 15) return getRandomMood(waxingGibbousMoods);
+        if (day === 15) return getRandomMood(fullMoonMoods);
+        if (day < 22) return getRandomMood(waningGibbousMoods);
+        if (day === 22) return getRandomMood(lastQuarterMoods);
+        return getRandomMood(waningCrescentMoods);
+      }
+
+      // Enhanced activity suggestions with more variations
+      function getActivitySuggestion(day) {
+        // Define activity categories based on lunar phases
+        const newMoonActivities = [
+          "Try a new walking route",
+          "Explore a new park",
+          "Introduce a new toy",
+          "Visit new friends",
+          "Start a training challenge"
+        ];
+
+        const waxingCrescentActivities = [
+          "Fetch games with variety",
+          "Energetic play sessions",
+          "Morning adventure walks",
+          "Interactive puzzle toys",
+          "Backyard obstacle course"
+        ];
+
+        const firstQuarterActivities = [
+          "Agility training fun",
+          "Social playdates",
+          "Frisbee in the park",
+          "Swimming adventures",
+          "Trick training sessions"
+        ];
+
+        const waxingGibbousActivities = [
+          "Hide and seek games",
+          "Scent work activities",
+          "Moderate hikes",
+          "Toy rotation day",
+          "Enrichment activities"
+        ];
+
+        const fullMoonActivities = [
+          "Gentle cuddle sessions",
+          "Relaxing brushing time",
+          "Calm evening walks",
+          "Peaceful bonding time",
+          "Soothing music therapy"
+        ];
+
+        const waningGibbousActivities = [
+          "Relaxing massage time",
+          "Gentle stretching",
+          "Quiet garden time",
+          "Slow-paced walks",
+          "Calming chew toys"
+        ];
+
+        const lastQuarterActivities = [
+          "Quiet play time",
+          "Mental stimulation games",
+          "Gentle training review",
+          "Moderate exercise",
+          "Balanced rest & play"
+        ];
+
+        const waningCrescentActivities = [
+          "Short, calm walks",
+          "Restful nap times",
+          "Gentle indoor games",
+          "Quiet companionship",
+          "Cozy blanket time"
+        ];
+
+        // Get a random activity from the appropriate category
+        const getRandomActivity = (activityArray) => {
+          const randomIndex = Math.floor(Math.random() * activityArray.length);
+          return activityArray[randomIndex];
+        };
+
+        // Return an activity based on the lunar day
+        if (day === 1) return getRandomActivity(newMoonActivities);
+        if (day < 8) return getRandomActivity(waxingCrescentActivities);
+        if (day === 8) return getRandomActivity(firstQuarterActivities);
+        if (day < 15) return getRandomActivity(waxingGibbousActivities);
+        if (day === 15) return getRandomActivity(fullMoonActivities);
+        if (day < 22) return getRandomActivity(waningGibbousActivities);
+        if (day === 22) return getRandomActivity(lastQuarterActivities);
+        return getRandomActivity(waningCrescentActivities);
+      }
+
+      // Date utility functions
+      function addDays(date, days) {
+        const result = new Date(date);
+        result.setDate(result.getDate() + days);
+        return result;
+      }
+
+      function startOfWeek(date, options = { weekStartsOn: 6 }) {
+        const result = new Date(date);
+        const day = result.getDay();
+        const diff = (day < options.weekStartsOn ? 7 : 0) + day - options.weekStartsOn;
+        result.setDate(result.getDate() - diff);
+        return result;
+      }
+
+      function formatDate(date, format) {
+        const d = new Date(date);
+
+        // Simple date formatter
+        switch (format) {
+          case "d":
+            return d.getDate();
+          case "EEE":
+            return ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"][d.getDay()];
+          case "MMM":
+            return ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"][d.getMonth()];
+          default:
+            return d.toString();
+        }
+      }
     });
   </script>
-  <script src="{{ '/assets/js/calendar.js' | relative_url }}"></script>
 </body>
 </html>
 
