@@ -163,14 +163,92 @@ p {
   margin: 0 auto 2rem;
 }
 
-/* Calendar container */
-.calendar-container {
-  background-color: #1a1a1a;
+/* Intro section */
+.intro-section {
+  margin-bottom: 2rem;
+}
+
+.intro-card {
+  background-color: #1f2937;
   border-radius: 0.75rem;
   padding: 1.5rem;
-  border: 4px solid #fb923c;
+  border: 2px solid #fb923c;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+.intro-card h2 {
+  color: #fdba74;
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+}
+
+.intro-card p {
+  color: #e5e7eb;
+  margin-bottom: 1rem;
+}
+
+.intro-list {
+  list-style-type: none;
+  padding-left: 1rem;
+  margin-bottom: 1rem;
+}
+
+.intro-list li {
+  position: relative;
+  padding-left: 1.5rem;
+  margin-bottom: 0.5rem;
+  color: #d1d5db;
+}
+
+.intro-list li::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: #fb923c;
+  font-weight: bold;
+}
+
+.intro-list li strong {
+  color: #fdba74;
+}
+
+@media (max-width: 768px) {
+  .intro-card {
+    padding: 1rem;
+  }
+
+  .intro-list {
+    padding-left: 0.5rem;
+  }
+
+  .intro-list li {
+    padding-left: 1.25rem;
+  }
+}
+
+/* Calendar container */
+.calendar-container {
+  padding: 1rem;
+  border: 2px solid #fb923c;
+  background-color: #1a1a1a;
+  border-radius: 0.75rem;
   box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
   margin-bottom: 2rem;
+}
+
+@media (max-width: 768px) {
+  .calendar-container {
+    padding: 0.75rem;
+  }
+
+  .lunar-month-year {
+    font-size: 1.5rem;
+  }
+
+  .button-nav {
+    height: 2.5rem;
+    width: 2.5rem;
+  }
 }
 
 /* Calendar header */
@@ -234,65 +312,72 @@ p {
 .calendar-grid {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  gap: 0.75rem;
-  margin-bottom: 1.5rem;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+@media (max-width: 768px) {
+  .calendar-grid {
+    gap: 0.25rem;
+  }
 }
 
 /* Day headers */
+.day-header {
+  padding: 0.25rem;
+}
+
 .day-header-image {
-  width: 60px;
-  height: 60px;
-  margin-bottom: 0.5rem;
-  object-fit: contain;
+  width: 48px;
+  height: 48px;
   border: 2px solid #fb923c;
-  border-radius: 0.75rem;
-  padding: 0.5rem;
-  background-color: rgba(31, 41, 55, 0.5);
+  border-radius: 0.375rem;
+  padding: 0.375rem;
+  background-color: rgba(31, 41, 55, 0.8);
   transition: transform 0.2s ease;
 }
 
-.day-header-image:hover {
-  transform: scale(1.05);
-}
-
-.day-header {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 0.5rem;
+@media (max-width: 768px) {
+  .day-header-image {
+    width: 40px;
+    height: 40px;
+    padding: 0.25rem;
+  }
 }
 
 .day-name {
-  font-weight: 700;
+  font-size: 0.75rem;
   color: #fdba74;
-  font-size: 1.125rem;
-  margin-top: 0.5rem;
+  margin-top: 0.25rem;
+  text-align: center;
 }
 
 /* Calendar day */
 .calendar-day {
   background-color: #1f2937;
-  border-radius: 0.75rem;
-  min-height: 180px;
+  border-radius: 0.5rem;
+  min-height: 140px;
   display: flex;
   flex-direction: column;
   position: relative;
   overflow: hidden;
   border: 1px solid #374151;
   transition: all 0.25s ease;
-  padding: 1rem;
+  padding: 0.75rem;
+  contain: content;
+  will-change: transform;
 }
 
-.calendar-day:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-  border-color: rgba(251, 146, 60, 0.5);
+@media (max-width: 768px) {
+  .calendar-day {
+    min-height: 160px;
+    padding: 0.5rem;
+  }
 }
 
 .special-moon-day {
+  border: 1px solid #fb923c;
   background-image: linear-gradient(to bottom right, #1f2937, #1f2937, #111827);
-  border: 2px solid #fb923c;
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2), 0 4px 6px -2px rgba(0, 0, 0, 0.1);
 }
 
 /* Day header */
@@ -306,19 +391,18 @@ p {
 
 .gregorian-date {
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
 }
 
 .weekday {
-  font-size: 0.875rem;
-  font-weight: 600;
-  color: #fdba74;
+  color: #9ca3af;
+  font-size: 0.75rem;
 }
 
 .day-number {
-  font-size: 1.125rem;
+  color: #fdba74;
   font-weight: 700;
-  color: #ffffff;
 }
 
 .lunar-date {
@@ -333,10 +417,9 @@ p {
 }
 
 .lunar-day {
-  font-size: 1.75rem;
-  font-weight: 800;
   color: #fb923c;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  font-weight: 800;
+  font-size: 1.125rem;
 }
 
 /* Day content */
@@ -361,16 +444,21 @@ p {
 }
 
 .mood-text {
-  font-size: 1.125rem;
-  font-weight: 700;
-  color: #fdba74;
   text-align: center;
-  margin: 0.75rem 0;
-  line-height: 1.4;
+  font-size: 0.875rem;
+  font-weight: 700;
   background: linear-gradient(to right, #fdba74, #f97316);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
+  margin: 0.5rem 0;
+  line-height: 1.2;
+}
+
+@media (max-width: 768px) {
+  .mood-text {
+    font-size: 0.8125rem;
+  }
 }
 
 .activity-suggestion {
@@ -379,45 +467,41 @@ p {
 }
 
 .activity-text {
-  font-size: 0.875rem;
-  font-weight: 600;
+  font-size: 0.75rem;
   color: #e5e7eb;
-  line-height: 1.4;
+  text-align: center;
+  line-height: 1.3;
 }
 
 /* Moon phase */
 .moon-phase {
-  margin-top: 0.75rem;
+  margin-top: 0.5rem;
   display: flex;
   justify-content: center;
 }
 
 .moon-phase-inner {
-  background-color: rgba(17, 24, 39, 0.3);
-  padding: 0.25rem 0.75rem;
-  border-radius: 9999px;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.25rem;
+  opacity: 0.7;
 }
 
 .moon-emoji {
-  font-size: 1.25rem;
+  font-size: 1rem;
 }
 
 .moon-phase-name {
-  font-size: 0.75rem;
-  color: #9ca3af;
-  font-weight: 500;
+  display: none;
 }
 
 /* Special indicator */
 .special-indicator {
   position: absolute;
-  top: -0.25rem;
-  right: -0.25rem;
-  width: 1rem;
-  height: 1rem;
+  top: -0.125rem;
+  right: -0.125rem;
+  width: 0.5rem;
+  height: 0.5rem;
   background-color: #fb923c;
   border-radius: 9999px;
   animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
@@ -640,20 +724,156 @@ p {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem;
+  font-size: 0.875rem;
 }
 
 .gregorian-date {
-  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.weekday {
   color: #9ca3af;
-  font-weight: 500;
+  font-size: 0.75rem;
+}
+
+.day-number {
+  color: #fdba74;
+  font-weight: 700;
 }
 
 /* Activity section */
 .activity-section {
   margin-top: auto;
-  text-align: center;
-  padding-top: 0.75rem;
+  padding-top: 0.5rem;
   border-top: 1px solid rgba(251, 146, 60, 0.2);
+}
+
+.activity-text {
+  font-size: 0.75rem;
+  color: #e5e7eb;
+  text-align: center;
+  line-height: 1.3;
+}
+
+/* Very small screens */
+@media (max-width: 375px) {
+  .calendar-day {
+    min-height: 140px;
+    padding: 0.375rem;
+  }
+
+  .day-header-image {
+    width: 36px;
+    height: 36px;
+  }
+
+  .lunar-month-year {
+    font-size: 1.25rem;
+  }
+
+  .mood-text {
+    font-size: 0.75rem;
+  }
+
+  .activity-text {
+    font-size: 0.7rem;
+  }
+}
+
+/* Print styles */
+@media print {
+  body {
+    background: white;
+    color: black;
+  }
+
+  .container {
+    max-width: 100%;
+    padding: 0;
+  }
+
+  .calendar-container {
+    border: 1px solid #ccc;
+    box-shadow: none;
+  }
+
+  .button-nav {
+    display: none;
+  }
+
+  .site-footer {
+    display: none;
+  }
+
+  .calendar-day {
+    break-inside: avoid;
+    border: 1px solid #ccc;
+    background: white !important;
+  }
+
+  .special-moon-day {
+    border: 1px solid #000;
+  }
+
+  .day-number,
+  .lunar-day,
+  .mood-text {
+    color: black !important;
+    -webkit-text-fill-color: black;
+  }
+
+  .activity-text {
+    color: #333 !important;
+  }
+}
+
+.calendar-day {
+  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+  will-change: transform;
+}
+
+.button-nav {
+  transition: background-color 0.2s ease, transform 0.2s ease;
+  will-change: transform;
+}
+
+.button-nav:hover {
+  transform: scale(1.05);
+}
+
+/* Keyboard navigation */
+.button-nav:focus-visible {
+  outline: 2px solid #f97316;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.4);
+}
+
+.calendar-day:focus-visible {
+  outline: 2px solid #f97316;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.4);
+}
+
+/* Loading indicator */
+.loading-indicator {
+  grid-column: span 7;
+  text-align: center;
+  padding: 2rem;
+  color: #fdba74;
+  font-size: 1.25rem;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
 }
 
