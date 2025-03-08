@@ -273,13 +273,14 @@ p {
 .calendar-day {
   background-color: #1f2937;
   border-radius: 0.75rem;
-  min-height: 160px;
+  min-height: 180px;
   display: flex;
   flex-direction: column;
   position: relative;
   overflow: hidden;
   border: 1px solid #374151;
   transition: all 0.25s ease;
+  padding: 1rem;
 }
 
 .calendar-day:hover {
@@ -332,9 +333,10 @@ p {
 }
 
 .lunar-day {
-  font-size: 1.5rem;
-  font-weight: 700;
+  font-size: 1.75rem;
+  font-weight: 800;
   color: #fb923c;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
 /* Day content */
@@ -359,9 +361,16 @@ p {
 }
 
 .mood-text {
-  font-size: 0.875rem;
+  font-size: 1.125rem;
   font-weight: 700;
   color: #fdba74;
+  text-align: center;
+  margin: 0.75rem 0;
+  line-height: 1.4;
+  background: linear-gradient(to right, #fdba74, #f97316);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 
 .activity-suggestion {
@@ -370,27 +379,36 @@ p {
 }
 
 .activity-text {
-  font-size: 0.75rem;
+  font-size: 0.875rem;
   font-weight: 600;
-  color: #ffffff;
+  color: #e5e7eb;
+  line-height: 1.4;
 }
 
 /* Moon phase */
 .moon-phase {
-  margin-top: auto;
+  margin-top: 0.75rem;
   display: flex;
   justify-content: center;
-  padding: 0.5rem 0;
 }
 
 .moon-phase-inner {
   background-color: rgba(17, 24, 39, 0.3);
   padding: 0.25rem 0.75rem;
   border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .moon-emoji {
-  font-size: 1.5rem;
+  font-size: 1.25rem;
+}
+
+.moon-phase-name {
+  font-size: 0.75rem;
+  color: #9ca3af;
+  font-weight: 500;
 }
 
 /* Special indicator */
@@ -615,5 +633,27 @@ p {
 
 .animate-pulse {
   animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Date display */
+.date-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.gregorian-date {
+  font-size: 1rem;
+  color: #9ca3af;
+  font-weight: 500;
+}
+
+/* Activity section */
+.activity-section {
+  margin-top: auto;
+  text-align: center;
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba(251, 146, 60, 0.2);
 }
 
