@@ -1,0 +1,37 @@
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-content">
+      <div class="footer-branding">
+        <h2 class="footer-title">{{ site.title }}</h2>
+        <p class="footer-description">{{ site.description }}</p>
+      </div>
+      
+      <div class="footer-links">
+        <h3>Quick Links</h3>
+        <ul>
+          <li><a href="{{ site.baseurl }}/">Home</a></li>
+          <li><a href="{{ site.baseurl }}/about/">About</a></li>
+          <li><a href="{{ site.baseurl }}/privacy-policy/">Privacy Policy</a></li>
+          <li><a href="{{ site.baseurl }}/terms/">Terms of Use</a></li>
+        </ul>
+      </div>
+      
+      <div class="footer-social">
+        <h3>Connect</h3>
+        <ul class="social-links">
+          <li>
+            <a href="https://github.com/conspiracycorgi/corgi-calendar" aria-label="GitHub Repository">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="footer-bottom">
+      <p>&copy; {% if site.author %}{{ site.author }}{% else %}{{ site.title }}{% endif %} {{ 'now' | date: "%Y" }}. All rights reserved.</p>
+      <p>Track your corgi's mood with the lunar cycle</p>
+    </div>
+  </div>
+</footer>
+
