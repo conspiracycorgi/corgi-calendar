@@ -11,6 +11,12 @@
   <!-- Canonical URL -->
   <link rel="canonical" href="{{ page.url | replace:'index.html','' | prepend: site.baseurl | prepend: site.url }}">
   
+  <!-- Preload fonts -->
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&display=swap" as="style">
+
+  <!-- Theme color for mobile browsers -->
+  <meta name="theme-color" content="#1a1a1a">
+  
   <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   
@@ -43,6 +49,13 @@
 <body>
   <a class="skip-link" href="#main-content">Skip to content</a>
   
+  <noscript>
+    <div class="container" style="text-align: center; padding: 2rem; margin: 2rem auto; background: #1f2937; border: 2px solid #fb923c; border-radius: 0.75rem;">
+      <h2 style="color: #fdba74; margin-bottom: 1rem;">JavaScript Required</h2>
+      <p style="color: #ffffff;">This calendar requires JavaScript to function properly. Please enable JavaScript in your browser settings to use the Corgi Consciousness Calendar.</p>
+    </div>
+  </noscript>
+
   <header class="site-header sr-only">
     <div class="container">
       <div class="site-branding">
@@ -167,9 +180,26 @@
       const dayHeadersContainer = document.getElementById("day-headers");
       const calendarDaysContainer = document.getElementById("calendar-days");
 
-      // Event listeners
-      prevMonthButton.addEventListener("click", handlePrevMonth);
-      nextMonthButton.addEventListener("click", handleNextMonth);
+      // Check if all required elements exist
+      if (!prevMonthButton || !nextMonthButton || !lunarMonthYearElement || !dayHeadersContainer || !calendarDaysContainer) {
+        console.error('Required DOM elements not found');
+        return;
+      }
+
+      // Debounce function
+      function debounce(func, wait) {
+        let timeout;
+        return function() {
+          const context = this;
+          const args = arguments;
+          clearTimeout(timeout);
+          timeout = setTimeout(() => func.apply(context, args), wait);
+        };
+      }
+
+      // Event listeners with debouncing
+      prevMonthButton.addEventListener("click", debounce(handlePrevMonth, 300));
+      nextMonthButton.addEventListener("click", debounce(handleNextMonth, 300));
 
       // Initialize the calendar
       renderDayHeaders();
@@ -179,11 +209,13 @@
       function handlePrevMonth() {
         currentDate = addDays(currentDate, -28);
         renderCalendar();
+        saveCurrentDate();
       }
 
       function handleNextMonth() {
         currentDate = addDays(currentDate, 28);
         renderCalendar();
+        saveCurrentDate();
       }
 
       function renderDayHeaders() {
@@ -200,26 +232,19 @@
         });
       }
 
-      function renderCalendar() {
-        // Update lunar month and year
-        const lunarMonthYear = getLunarMonthYear(currentDate);
-        lunarMonthYearElement.textContent = lunarMonthYear;
+      // Cache for generated days
+      const dayCache = new Map();
 
-        // Clear and render calendar days
-        calendarDaysContainer.innerHTML = "";
-
-        const weekStart = startOfWeek(currentDate);
-
-        for (let i = 0; i < 28; i++) {
-          const currentDay = addDays(weekStart, i);
-          const lunarDay = (i % 28) + 1;
-
-          const dayElement = createCalendarDay(currentDay, lunarDay);
-          calendarDaysContainer.appendChild(dayElement);
-        }
-      }
-
+      // Modified createCalendarDay function to use cache
       function createCalendarDay(gregorianDate, lunarDay) {
+        // Create a cache key
+        const cacheKey = `${gregorianDate.toISOString()}-${lunarDay}`;
+        
+        // Check if we have this day in cache
+        if (dayCache.has(cacheKey)) {
+          return dayCache.get(cacheKey).cloneNode(true);
+        }
+        
         // Determine if this is a special moon day
         const isSpecialMoonDay = lunarDay === 1 || lunarDay === 8 || lunarDay === 15 || lunarDay === 22;
 
@@ -259,7 +284,34 @@
           ${isSpecialMoonDay ? '<div class="special-indicator" aria-hidden="true"></div>' : ''}
         `;
 
+        // Store in cache before returning
+        dayCache.set(cacheKey, dayElement);
         return dayElement;
+      }
+
+      function renderCalendar() {
+        // Show loading state
+        calendarDaysContainer.innerHTML = '<div class="loading-indicator">Loading calendar...</div>';
+        
+        // Update lunar month and year
+        const lunarMonthYear = getLunarMonthYear(currentDate);
+        lunarMonthYearElement.textContent = lunarMonthYear;
+
+        // Use setTimeout to allow the loading indicator to render
+        setTimeout(() => {
+          // Clear and render calendar days
+          calendarDaysContainer.innerHTML = "";
+
+          const weekStart = startOfWeek(currentDate);
+
+          for (let i = 0; i < 28; i++) {
+            const currentDay = addDays(weekStart, i);
+            const lunarDay = (i % 28) + 1;
+
+            const dayElement = createCalendarDay(currentDay, lunarDay);
+            calendarDaysContainer.appendChild(dayElement);
+          }
+        }, 10);
       }
 
       // Helper functions
@@ -452,6 +504,80 @@
             return d.toString();
         }
       }
+
+      // Add keyboard navigation
+      function setupKeyboardNavigation() {
+        document.addEventListener('keydown', function(e) {
+          // Left arrow key for previous month
+          if (e.key === 'ArrowLeft') {
+            handlePrevMonth();
+          }
+          // Right arrow key for next month
+          else if (e.key === 'ArrowRight') {
+            handleNextMonth();
+          }
+        });
+      }
+
+      // Call the function to set up keyboard navigation
+      setupKeyboardNavigation();
+
+      // Add touch gesture support
+      function setupTouchGestures() {
+        let touchStartX = 0;
+        let touchEndX = 0;
+        
+        const calendarContainer = document.querySelector('.calendar-container');
+        if (!calendarContainer) return;
+        
+        calendarContainer.addEventListener('touchstart', function(e) {
+          touchStartX = e.changedTouches[0].screenX;
+        }, false);
+        
+        calendarContainer.addEventListener('touchend', function(e) {
+          touchEndX = e.changedTouches[0].screenX;
+          handleSwipe();
+        }, false);
+        
+        function handleSwipe() {
+          const swipeThreshold = 50;
+          if (touchEndX < touchStartX - swipeThreshold) {
+            // Swipe left - next month
+            handleNextMonth();
+          }
+          if (touchEndX > touchStartX + swipeThreshold) {
+            // Swipe right - previous month
+            handlePrevMonth();
+          }
+        }
+      }
+
+      // Call the function to set up touch gestures
+      setupTouchGestures();
+
+      // Use local storage to remember current date
+      function loadSavedDate() {
+        const savedDate = localStorage.getItem('corgiCalendarDate');
+        if (savedDate) {
+          try {
+            currentDate = new Date(JSON.parse(savedDate));
+            renderCalendar();
+          } catch (e) {
+            console.error('Error loading saved date:', e);
+          }
+        }
+      }
+
+      function saveCurrentDate() {
+        try {
+          localStorage.setItem('corgiCalendarDate', JSON.stringify(currentDate.toISOString()));
+        } catch (e) {
+          console.error('Error saving date:', e);
+        }
+      }
+
+      // Load saved date on initialization
+      loadSavedDate();
     });
   </script>
 </body>
