@@ -7,38 +7,31 @@ document.addEventListener("DOMContentLoaded", () => {
   const dayImages = [
     {
       day: "Sat",
-      image:
-        "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Untitled%20design%2821%29-NlB9wAMiP2rFEqkcp1WkMwtPta3LAB.png",
+      image: "/assets/images/saturday corgi.png",
     },
     {
       day: "Sun",
-      image:
-        "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Untitled%20design%2818%29-GPmgJmj7rTGOtkNjsF94KsUlrwIroL.png",
+      image: "/assets/images/sunday corgi.png",
     },
     {
       day: "Mon",
-      image:
-        "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Untitled%20design%2816%29-7SdlnpzbFCE6TftUUQZv2V86DxxXvt.png",
+      image: "/assets/images/monday corgi.png",
     },
     {
       day: "Tue",
-      image:
-        "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Untitled%20design%2819%29-ckdlms9gUqdbJGXioj0IFpqQEkfobn.png",
+      image: "/assets/images/tuesday corgi.png",
     },
     {
       day: "Wed",
-      image:
-        "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Untitled%20design%2815%29-RwJ1yiTzBJAa3WuTLJLNT5EcLjz3PL.png",
+      image: "/assets/images/wednesday corgi.png",
     },
     {
       day: "Thu",
-      image:
-        "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Untitled%20design%2817%29-SZWM5qQsmwngq6u34u0E4FvgbrM0sC.png",
+      image: "/assets/images/thursday corgi.png",
     },
     {
       day: "Fri",
-      image:
-        "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Untitled%20design%2822%29-48x9YhQJ7uNVybcnHDmJANkS6z9h9x.png",
+      image: "/assets/images/friday corgi.png",
     },
   ]
 
@@ -73,12 +66,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     dayImages.forEach((dayInfo) => {
       const headerElement = document.createElement("div")
-      headerElement.className = "flex flex-col items-center"
+      headerElement.className = "day-header"
       headerElement.innerHTML = `
-        <div class="w-16 h-16 sm:w-20 sm:h-20 relative mb-2 day-header-image">
-          <img src="${dayInfo.image}" alt="${dayInfo.day}" width="80" height="80" class="object-contain">
-        </div>
-        <div class="text-center font-bold text-orange-300 text-base sm:text-lg">${dayInfo.day}</div>
+        <img src="${dayInfo.image}" alt="${dayInfo.day} Corgi" class="day-header-image">
+        <div class="day-name">${dayInfo.day}</div>
       `
       dayHeadersContainer.appendChild(headerElement)
     })
@@ -101,13 +92,6 @@ document.addEventListener("DOMContentLoaded", () => {
       const dayElement = createCalendarDay(currentDay, lunarDay)
       calendarDaysContainer.appendChild(dayElement)
     }
-
-    // Add fade-in animation to the calendar
-    calendarDaysContainer.style.opacity = "0"
-    setTimeout(() => {
-      calendarDaysContainer.style.transition = "opacity 0.3s ease"
-      calendarDaysContainer.style.opacity = "1"
-    }, 50)
   }
 
   function createCalendarDay(gregorianDate, lunarDay) {
@@ -120,71 +104,35 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Get moon phase
     const moonPhase = getMoonPhase(lunarDay)
+    const moonPhaseName = getMoonPhaseName(lunarDay)
 
     // Create day element
     const dayElement = document.createElement("div")
-    dayElement.className = `calendar-day flex flex-col rounded-xl overflow-hidden transition-all relative ${
-      isSpecialMoonDay ? "special-moon-day" : "regular-day hover:border-orange-400/50"
-    }`
+    dayElement.className = `calendar-day ${isSpecialMoonDay ? "special-moon-day" : ""}`
 
-    // Add hover event for non-special days to show activity
-    if (!isSpecialMoonDay) {
-      dayElement.addEventListener("mouseenter", function () {
-        const activityElement = this.querySelector(".activity-suggestion")
-        if (activityElement) {
-          activityElement.style.opacity = "1"
-        }
-      })
-
-      dayElement.addEventListener("mouseleave", function () {
-        const activityElement = this.querySelector(".activity-suggestion")
-        if (activityElement) {
-          activityElement.style.opacity = "0"
-        }
-      })
-    }
+    // Format the date as MM/DD/YYYY
+    const formattedDate = `${gregorianDate.getMonth() + 1}/${gregorianDate.getDate()}/${gregorianDate.getFullYear()}`
 
     dayElement.innerHTML = `
-      <!-- Header section with dates -->
-      <div class="bg-gray-900/60 p-2 flex justify-between items-center">
-        <div class="flex flex-col">
-          <span class="text-sm font-semibold text-orange-300">${formatDate(gregorianDate, "EEE")}</span>
-          <span class="text-lg font-bold text-white">G${formatDate(gregorianDate, "d")}</span>
-        </div>
-        <div class="flex flex-col items-end">
-          <span class="text-xs text-orange-200/80">${formatDate(gregorianDate, "MMM")}</span>
-          <span class="text-2xl font-bold text-orange-400">L${lunarDay}</span>
+      <div class="date-section">
+        <span class="gregorian-date">${formattedDate}</span>
+        <span class="lunar-day">L${lunarDay}</span>
+      </div>
+
+      <div class="mood-text">${corgiMood}</div>
+
+      <div class="activity-section">
+        <div class="activity-text">${activitySuggestion}</div>
+      </div>
+
+      <div class="moon-phase">
+        <div class="moon-phase-inner" title="${moonPhaseName}">
+          <span class="moon-emoji ${isSpecialMoonDay ? "animate-wiggle" : ""}" aria-label="${moonPhaseName}">${moonPhase}</span>
+          <span class="moon-phase-name">${moonPhaseName}</span>
         </div>
       </div>
 
-      <!-- Content section -->
-      <div class="p-2 flex-grow flex flex-col">
-        <!-- Corgi mood - now at the top -->
-        <div class="mb-auto mt-2">
-          <div class="text-center">
-            <div class="text-xs font-bold text-gray-400 uppercase tracking-wider">Corgi Mood</div>
-            <div class="text-sm font-bold text-orange-300">${corgiMood}</div>
-          </div>
-
-          <!-- Activity suggestion - only show on special moon days or when hovered -->
-          <div class="activity-suggestion mt-1 text-center transition-opacity duration-300 ${isSpecialMoonDay ? "opacity-100" : "opacity-0"}">
-            <div class="text-xs font-bold text-gray-400 uppercase tracking-wider">Activity</div>
-            <div class="text-xs font-bold text-white">${activitySuggestion}</div>
-          </div>
-        </div>
-
-        <!-- Moon phase - now at the bottom -->
-        <div class="flex justify-center items-center mt-auto">
-          <div class="flex items-center bg-gray-900/30 py-1 px-3 rounded-full">
-            <span class="${isSpecialMoonDay ? "text-2xl animate-wiggle" : "text-2xl"}" role="img" aria-label="Moon Phase">
-              ${moonPhase}
-            </span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Special indicator -->
-      ${isSpecialMoonDay ? '<div class="absolute -top-1 -right-1 w-4 h-4 bg-orange-400 rounded-full animate-pulse"></div>' : ""}
+      ${isSpecialMoonDay ? '<div class="special-indicator" aria-hidden="true"></div>' : ""}
     `
 
     return dayElement
@@ -209,172 +157,121 @@ document.addEventListener("DOMContentLoaded", () => {
     return "🌘" // Waning Crescent
   }
 
-  // Enhanced corgi mood function with more variations
-  function getCorgiMood(day) {
-    // Define mood categories based on lunar phases
-    const newMoonMoods = [
-      "Adventurous & Bold",
-      "Excitedly Curious",
-      "Ready to Explore",
-      "Boundlessly Energetic",
-      "Playfully Mischievous",
-    ]
-
-    const waxingCrescentMoods = [
-      "Energetically Hopeful",
-      "Bright & Bouncy",
-      "Eagerly Attentive",
-      "Spirited & Lively",
-      "Cheerfully Active",
-    ]
-
-    const firstQuarterMoods = [
-      "Playfully Social",
-      "Enthusiastically Engaged",
-      "Joyfully Interactive",
-      "Happily Frisky",
-      "Delightfully Animated",
-    ]
-
-    const waxingGibbousMoods = [
-      "Curiously Inquisitive",
-      "Actively Exploring",
-      "Intently Focused",
-      "Keenly Observant",
-      "Thoughtfully Engaged",
-    ]
-
-    const fullMoonMoods = [
-      "Peacefully Relaxed",
-      "Contentedly Calm",
-      "Serenely Balanced",
-      "Blissfully Tranquil",
-      "Harmoniously Centered",
-    ]
-
-    const waningGibbousMoods = [
-      "Dreamily Reflective",
-      "Softly Contemplative",
-      "Gently Pensive",
-      "Quietly Thoughtful",
-      "Calmly Introspective",
-    ]
-
-    const lastQuarterMoods = [
-      "Thoughtfully Wise",
-      "Insightfully Calm",
-      "Deeply Observant",
-      "Mindfully Present",
-      "Sagely Perceptive",
-    ]
-
-    const waningCrescentMoods = [
-      "Restfully Serene",
-      "Peacefully Quiet",
-      "Gently Recharging",
-      "Softly Recuperating",
-      "Calmly Renewing",
-    ]
-
-    // Get a random mood from the appropriate category based on lunar day
-    const getRandomMood = (moodArray) => {
-      const randomIndex = Math.floor(Math.random() * moodArray.length)
-      return moodArray[randomIndex]
-    }
-
-    // Return a mood based on the lunar day
-    if (day === 1) return getRandomMood(newMoonMoods)
-    if (day < 8) return getRandomMood(waxingCrescentMoods)
-    if (day === 8) return getRandomMood(firstQuarterMoods)
-    if (day < 15) return getRandomMood(waxingGibbousMoods)
-    if (day === 15) return getRandomMood(fullMoonMoods)
-    if (day < 22) return getRandomMood(waningGibbousMoods)
-    if (day === 22) return getRandomMood(lastQuarterMoods)
-    return getRandomMood(waningCrescentMoods)
+  function getMoonPhaseName(day) {
+    if (day === 1) return "New Moon"
+    if (day < 8) return "Waxing Crescent"
+    if (day === 8) return "First Quarter"
+    if (day < 15) return "Waxing Gibbous"
+    if (day === 15) return "Full Moon"
+    if (day < 22) return "Waning Gibbous"
+    if (day === 22) return "Last Quarter"
+    return "Waning Crescent"
   }
 
-  // Enhanced activity suggestions with more variations
-  function getActivitySuggestion(day) {
-    // Define activity categories based on lunar phases
-    const newMoonActivities = [
-      "Try a new walking route",
-      "Explore a new park",
-      "Introduce a new toy",
-      "Visit new friends",
-      "Start a training challenge",
-    ]
-
-    const waxingCrescentActivities = [
-      "Fetch games with variety",
-      "Energetic play sessions",
-      "Morning adventure walks",
-      "Interactive puzzle toys",
-      "Backyard obstacle course",
-    ]
-
-    const firstQuarterActivities = [
-      "Agility training fun",
-      "Social playdates",
-      "Frisbee in the park",
-      "Swimming adventures",
-      "Trick training sessions",
-    ]
-
-    const waxingGibbousActivities = [
-      "Hide and seek games",
-      "Scent work activities",
-      "Moderate hikes",
-      "Toy rotation day",
-      "Enrichment activities",
-    ]
-
-    const fullMoonActivities = [
-      "Gentle cuddle sessions",
-      "Relaxing brushing time",
-      "Calm evening walks",
-      "Peaceful bonding time",
-      "Soothing music therapy",
-    ]
-
-    const waningGibbousActivities = [
-      "Relaxing massage time",
-      "Gentle stretching",
-      "Quiet garden time",
-      "Slow-paced walks",
-      "Calming chew toys",
-    ]
-
-    const lastQuarterActivities = [
-      "Quiet play time",
-      "Mental stimulation games",
-      "Gentle training review",
-      "Moderate exercise",
-      "Balanced rest & play",
-    ]
-
-    const waningCrescentActivities = [
-      "Short, calm walks",
-      "Restful nap times",
-      "Gentle indoor games",
-      "Quiet companionship",
-      "Cozy blanket time",
-    ]
-
-    // Get a random activity from the appropriate category
-    const getRandomActivity = (activityArray) => {
-      const randomIndex = Math.floor(Math.random() * activityArray.length)
-      return activityArray[randomIndex]
+  // Enhanced corgi mood function with more specific and engaging moods
+  function getCorgiMood(day) {
+    const moods = {
+      newMoon: [
+        "Ready for Adventure!",
+        "Boundlessly Curious",
+        "Explorer Mode: ON",
+        "Peak Energy Level",
+        "Adventure Seeker",
+      ],
+      waxingCrescent: [
+        "Playfully Energetic",
+        "Bright & Bouncy",
+        "Spring in Their Step",
+        "Tail-Wagging Joy",
+        "Enthusiastically Active",
+      ],
+      firstQuarter: ["Social Butterfly", "Party Pup Energy", "Friendship Mode", "Playdate Ready", "Extra Friendly"],
+      waxingGibbous: [
+        "Focused & Alert",
+        "Keen Observer",
+        "Quick Learner Mode",
+        "Sharp & Attentive",
+        "Cleverly Engaged",
+      ],
+      fullMoon: ["Zen Master", "Perfectly Balanced", "Inner Peace Mode", "Harmoniously Happy", "Blissfully Content"],
+      waningGibbous: [
+        "Thoughtfully Calm",
+        "Gently Reflective",
+        "Wisdom Seeker",
+        "Peacefully Present",
+        "Mindfully Aware",
+      ],
+      lastQuarter: ["Quietly Wise", "Deep Thinker", "Contemplation Mode", "Calmly Observant", "Serenely Focused"],
+      waningCrescent: ["Restfully Serene", "Dreamy & Gentle", "Recovery Mode", "Peacefully Quiet", "Softly Relaxed"],
     }
 
-    // Return an activity based on the lunar day
-    if (day === 1) return getRandomActivity(newMoonActivities)
-    if (day < 8) return getRandomActivity(waxingCrescentActivities)
-    if (day === 8) return getRandomActivity(firstQuarterActivities)
-    if (day < 15) return getRandomActivity(waxingGibbousActivities)
-    if (day === 15) return getRandomActivity(fullMoonActivities)
-    if (day < 22) return getRandomActivity(waningGibbousActivities)
-    if (day === 22) return getRandomActivity(lastQuarterActivities)
-    return getRandomActivity(waningCrescentActivities)
+    let phase
+    if (day === 1) phase = "newMoon"
+    else if (day < 8) phase = "waxingCrescent"
+    else if (day === 8) phase = "firstQuarter"
+    else if (day < 15) phase = "waxingGibbous"
+    else if (day === 15) phase = "fullMoon"
+    else if (day < 22) phase = "waningGibbous"
+    else if (day === 22) phase = "lastQuarter"
+    else phase = "waningCrescent"
+
+    const selectedMoods = moods[phase]
+    return selectedMoods[Math.floor(Math.random() * selectedMoods.length)]
+  }
+
+  // Enhanced activity suggestions with more variations and mood matching
+  function getActivitySuggestion(day) {
+    const activities = {
+      energetic: [
+        "High-intensity agility training",
+        "Beach run and play session",
+        "Dog park social hour",
+        "Hiking adventure",
+        "Frisbee tournament",
+        "Splash park fun",
+        "Backyard obstacle course",
+        "Morning jog together",
+        "Interactive fetch games",
+        "Puppy playdate",
+      ],
+      moderate: [
+        "Nature walk exploration",
+        "Basic training practice",
+        "Scent work games",
+        "Toy rotation play",
+        "Garden exploration time",
+        "Moderate fetch session",
+        "Balance exercises",
+        "Tug-of-war play",
+        "Hide and seek games",
+        "Puzzle toy challenge",
+      ],
+      calm: [
+        "Gentle brushing session",
+        "Relaxing massage time",
+        "Quiet garden lounging",
+        "Slow neighborhood walk",
+        "Cuddle and story time",
+        "Gentle stretching",
+        "Peaceful porch sitting",
+        "Calm bonding exercises",
+        "Soft toy play",
+        "Meditation together",
+      ],
+    }
+
+    // Determine activity intensity based on lunar phase
+    let intensity
+    if (day === 1 || day === 8 || (day > 1 && day < 15)) {
+      intensity = "energetic" // Waxing phase - higher energy
+    } else if (day === 15 || (day > 15 && day < 22)) {
+      intensity = "moderate" // Waning gibbous - moderate energy
+    } else {
+      intensity = "calm" // Waning crescent - calmer energy
+    }
+
+    const selectedActivities = activities[intensity]
+    return selectedActivities[Math.floor(Math.random() * selectedActivities.length)]
   }
 
   // Date utility functions
