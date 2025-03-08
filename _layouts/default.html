@@ -1,333 +1,459 @@
-<script>
-  document.addEventListener("DOMContentLoaded", function() {
-    // Constants and configuration
-    const START_DATE = new Date(2025, 2, 29); // March 29, 2025
-    let currentDate = new Date(START_DATE);
+<!DOCTYPE html>
+<html lang="{{ site.lang | default: 'en' }}">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  
+  <title>{% if page.title %}{{ page.title }} | {{ site.title }}{% else %}{{ site.title }}{% endif %}</title>
+  <meta name="description" content="{% if page.excerpt %}{{ page.excerpt | strip_html | strip_newlines | truncate: 160 }}{% else %}{{ site.description }}{% endif %}">
+  
+  <!-- Canonical URL -->
+  <link rel="canonical" href="{{ page.url | replace:'index.html','' | prepend: site.baseurl | prepend: site.url }}">
+  
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <!-- Styles -->
+  <link rel="stylesheet" href="{{ '/assets/css/styles.css' | relative_url }}">
+  
+  <!-- Favicon -->
+  <link rel="apple-touch-icon" sizes="180x180" href="{{ '/assets/favicon/apple-touch-icon.png' | relative_url }}">
+  <link rel="icon" type="image/png" sizes="32x32" href="{{ '/assets/favicon/favicon-32x32.png' | relative_url }}">
+  <link rel="icon" type="image/png" sizes="16x16" href="{{ '/assets/favicon/favicon-16x16.png' | relative_url }}">
+  <link rel="manifest" href="{{ '/assets/favicon/site.webmanifest' | relative_url }}">
+  
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="{{ page.url | replace:'index.html','' | prepend: site.baseurl | prepend: site.url }}">
+  <meta property="og:title" content="{% if page.title %}{{ page.title }}{% else %}{{ site.title }}{% endif %}">
+  <meta property="og:description" content="{% if page.excerpt %}{{ page.excerpt | strip_html | strip_newlines | truncate: 160 }}{% else %}{{ site.description }}{% endif %}">
+  <meta property="og:image" content="{{ site.url }}{{ site.baseurl }}/assets/images/corgi-social-share.jpg">
+  
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:url" content="{{ page.url | replace:'index.html','' | prepend: site.baseurl | prepend: site.url }}">
+  <meta name="twitter:title" content="{% if page.title %}{{ page.title }}{% else %}{{ site.title }}{% endif %}">
+  <meta name="twitter:description" content="{% if page.excerpt %}{{ page.excerpt | strip_html | strip_newlines | truncate: 160 }}{% else %}{{ site.description }}{% endif %}">
+  <meta name="twitter:image" content="{{ site.url }}{{ site.baseurl }}/assets/images/corgi-social-share.jpg">
+  
+  <!-- SEO tags -->
+  {% seo %}
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  
+  <header class="site-header sr-only">
+    <div class="container">
+      <div class="site-branding">
+        <a href="{{ site.baseurl }}/" class="site-logo">
+          <span class="visually-hidden">{{ site.title }}</span>
+        </a>
+      </div>
+      
+      <nav class="site-navigation" aria-label="Main Navigation">
+        <ul>
+          <li><a href="{{ site.baseurl }}/" {% if page.url == '/' %}aria-current="page"{% endif %}>Home</a></li>
+          <li><a href="{{ site.baseurl }}/about/" {% if page.url == '/about/' %}aria-current="page"{% endif %}>About</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
 
-    // Day images for each day of the week
-    const dayImages = [
-      {
-        day: "Sat",
-        image: "{{ site.baseurl }}/assets/images/saturday corgi.png"
-      },
-      {
-        day: "Sun",
-        image: "{{ site.baseurl }}/assets/images/sunday corgi.png"
-      },
-      {
-        day: "Mon",
-        image: "{{ site.baseurl }}/assets/images/monday corgi.png"
-      },
-      {
-        day: "Tue",
-        image: "{{ site.baseurl }}/assets/images/tuesday corgi.png"
-      },
-      {
-        day: "Wed",
-        image: "{{ site.baseurl }}/assets/images/wednesday corgi.png"
-      },
-      {
-        day: "Thu",
-        image: "{{ site.baseurl }}/assets/images/thursday corgi.png"
-      },
-      {
-        day: "Fri",
-        image: "{{ site.baseurl }}/assets/images/friday corgi.png"
+  <main id="main-content">
+    {{ content }}
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-branding">
+          <h2 class="footer-title">{{ site.title }}</h2>
+          <p class="footer-description">{{ site.description }}</p>
+        </div>
+        
+        <div class="footer-links">
+          <h3>Quick Links</h3>
+          <ul>
+            <li><a href="{{ site.baseurl }}/">Home</a></li>
+            <li><a href="{{ site.baseurl }}/about/">About</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-social">
+          <h3>Connect</h3>
+          <ul class="social-links">
+            <li>
+              <a href="https://github.com/conspiracycorgi/corgi-calendar" aria-label="GitHub Repository">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="footer-bottom">
+        <p>&copy; {% if site.author %}{{ site.author }}{% else %}{{ site.title }}{% endif %} {{ 'now' | date: "%Y" }}. All rights reserved.</p>
+        <p>Track your corgi's mood with the lunar cycle</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Structured data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "{{ site.title }}",
+    "description": "{{ site.description }}",
+    "url": "{{ site.url }}{{ site.baseurl }}",
+    "applicationCategory": "LifestyleApplication",
+    "operatingSystem": "Web",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "author": {
+      "@type": "Person",
+      "name": "{{ site.author }}"
+    }
+  }
+  </script>
+  
+  <!-- Calendar JavaScript -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      // Constants and configuration
+      const START_DATE = new Date(2025, 2, 29); // March 29, 2025
+      let currentDate = new Date(START_DATE);
+
+      // Day images for each day of the week
+      const dayImages = [
+        {
+          day: "Sat",
+          image: "{{ site.baseurl }}/assets/images/saturday corgi.png"
+        },
+        {
+          day: "Sun",
+          image: "{{ site.baseurl }}/assets/images/sunday corgi.png"
+        },
+        {
+          day: "Mon",
+          image: "{{ site.baseurl }}/assets/images/monday corgi.png"
+        },
+        {
+          day: "Tue",
+          image: "{{ site.baseurl }}/assets/images/tuesday corgi.png"
+        },
+        {
+          day: "Wed",
+          image: "{{ site.baseurl }}/assets/images/wednesday corgi.png"
+        },
+        {
+          day: "Thu",
+          image: "{{ site.baseurl }}/assets/images/thursday corgi.png"
+        },
+        {
+          day: "Fri",
+          image: "{{ site.baseurl }}/assets/images/friday corgi.png"
+        }
+      ];
+
+      // DOM elements
+      const prevMonthButton = document.getElementById("prev-month");
+      const nextMonthButton = document.getElementById("next-month");
+      const lunarMonthYearElement = document.getElementById("lunar-month-year");
+      const dayHeadersContainer = document.getElementById("day-headers");
+      const calendarDaysContainer = document.getElementById("calendar-days");
+
+      // Event listeners
+      prevMonthButton.addEventListener("click", handlePrevMonth);
+      nextMonthButton.addEventListener("click", handleNextMonth);
+
+      // Initialize the calendar
+      renderDayHeaders();
+      renderCalendar();
+
+      // Functions
+      function handlePrevMonth() {
+        currentDate = addDays(currentDate, -28);
+        renderCalendar();
       }
-    ];
 
-    // DOM elements
-    const prevMonthButton = document.getElementById("prev-month");
-    const nextMonthButton = document.getElementById("next-month");
-    const lunarMonthYearElement = document.getElementById("lunar-month-year");
-    const dayHeadersContainer = document.getElementById("day-headers");
-    const calendarDaysContainer = document.getElementById("calendar-days");
+      function handleNextMonth() {
+        currentDate = addDays(currentDate, 28);
+        renderCalendar();
+      }
 
-    // Event listeners
-    prevMonthButton.addEventListener("click", handlePrevMonth);
-    nextMonthButton.addEventListener("click", handleNextMonth);
+      function renderDayHeaders() {
+        dayHeadersContainer.innerHTML = "";
 
-    // Initialize the calendar
-    renderDayHeaders();
-    renderCalendar();
+        dayImages.forEach((dayInfo) => {
+          const headerElement = document.createElement("div");
+          headerElement.className = "day-header";
+          headerElement.innerHTML = `
+            <img src="${dayInfo.image}" alt="${dayInfo.day} Corgi" class="day-header-image">
+            <div class="day-name">${dayInfo.day}</div>
+          `;
+          dayHeadersContainer.appendChild(headerElement);
+        });
+      }
 
-    // Functions
-    function handlePrevMonth() {
-      currentDate = addDays(currentDate, -28);
-      renderCalendar();
-    }
+      function renderCalendar() {
+        // Update lunar month and year
+        const lunarMonthYear = getLunarMonthYear(currentDate);
+        lunarMonthYearElement.textContent = lunarMonthYear;
 
-    function handleNextMonth() {
-      currentDate = addDays(currentDate, 28);
-      renderCalendar();
-    }
+        // Clear and render calendar days
+        calendarDaysContainer.innerHTML = "";
 
-    function renderDayHeaders() {
-      dayHeadersContainer.innerHTML = "";
+        const weekStart = startOfWeek(currentDate);
 
-      dayImages.forEach((dayInfo) => {
-        const headerElement = document.createElement("div");
-        headerElement.className = "day-header";
-        headerElement.innerHTML = `
-          <img src="${dayInfo.image}" alt="${dayInfo.day} Corgi" class="day-header-image">
-          <div class="day-name">${dayInfo.day}</div>
+        for (let i = 0; i < 28; i++) {
+          const currentDay = addDays(weekStart, i);
+          const lunarDay = (i % 28) + 1;
+
+          const dayElement = createCalendarDay(currentDay, lunarDay);
+          calendarDaysContainer.appendChild(dayElement);
+        }
+      }
+
+      function createCalendarDay(gregorianDate, lunarDay) {
+        // Determine if this is a special moon day
+        const isSpecialMoonDay = lunarDay === 1 || lunarDay === 8 || lunarDay === 15 || lunarDay === 22;
+
+        // Get corgi mood and activity suggestion
+        const corgiMood = getCorgiMood(lunarDay);
+        const activitySuggestion = getActivitySuggestion(lunarDay);
+
+        // Get moon phase
+        const moonPhase = getMoonPhase(lunarDay);
+        const weekday = formatDate(gregorianDate, "EEE");
+
+        // Create day element
+        const dayElement = document.createElement("div");
+        dayElement.className = `calendar-day ${isSpecialMoonDay ? "special-moon-day" : ""}`;
+
+        dayElement.innerHTML = `
+          <div class="date-section">
+            <div class="gregorian-date">
+              <span class="weekday">${weekday}</span>
+              <span class="day-number">G${gregorianDate.getDate()}</span>
+            </div>
+            <span class="lunar-day">L${lunarDay}</span>
+          </div>
+
+          <div class="mood-text">${corgiMood}</div>
+
+          <div class="activity-section">
+            <div class="activity-text">${activitySuggestion}</div>
+          </div>
+
+          <div class="moon-phase">
+            <div class="moon-phase-inner">
+              <span class="moon-emoji" aria-label="${getMoonPhaseName(lunarDay)}">${moonPhase}</span>
+            </div>
+          </div>
+
+          ${isSpecialMoonDay ? '<div class="special-indicator" aria-hidden="true"></div>' : ''}
         `;
-        dayHeadersContainer.appendChild(headerElement);
-      });
-    }
 
-    function renderCalendar() {
-      // Update lunar month and year
-      const lunarMonthYear = getLunarMonthYear(currentDate);
-      lunarMonthYearElement.textContent = lunarMonthYear;
-
-      // Clear and render calendar days
-      calendarDaysContainer.innerHTML = "";
-
-      const weekStart = startOfWeek(currentDate);
-
-      for (let i = 0; i < 28; i++) {
-        const currentDay = addDays(weekStart, i);
-        const lunarDay = (i % 28) + 1;
-
-        const dayElement = createCalendarDay(currentDay, lunarDay);
-        calendarDaysContainer.appendChild(dayElement);
-      }
-    }
-
-    function createCalendarDay(gregorianDate, lunarDay) {
-      // Determine if this is a special moon day
-      const isSpecialMoonDay = lunarDay === 1 || lunarDay === 8 || lunarDay === 15 || lunarDay === 22;
-
-      // Get corgi mood and activity suggestion
-      const corgiMood = getCorgiMood(lunarDay);
-      const activitySuggestion = getActivitySuggestion(lunarDay);
-
-      // Get moon phase
-      const moonPhase = getMoonPhase(lunarDay);
-      const weekday = formatDate(gregorianDate, "EEE");
-
-      // Create day element
-      const dayElement = document.createElement("div");
-      dayElement.className = `calendar-day ${isSpecialMoonDay ? "special-moon-day" : ""}`;
-
-      dayElement.innerHTML = `
-        <div class="date-section">
-          <div class="gregorian-date">
-            <span class="weekday">${weekday}</span>
-            <span class="day-number">G${gregorianDate.getDate()}</span>
-          </div>
-          <span class="lunar-day">L${lunarDay}</span>
-        </div>
-
-        <div class="mood-text">${corgiMood}</div>
-
-        <div class="activity-section">
-          <div class="activity-text">${activitySuggestion}</div>
-        </div>
-
-        <div class="moon-phase">
-          <div class="moon-phase-inner">
-            <span class="moon-emoji" aria-label="${getMoonPhaseName(lunarDay)}">${moonPhase}</span>
-          </div>
-        </div>
-
-        ${isSpecialMoonDay ? '<div class="special-indicator" aria-hidden="true"></div>' : ''}
-      `;
-
-      return dayElement;
-    }
-
-    // Helper functions
-    function getLunarMonthYear(date) {
-      const daysSinceStart = Math.floor((date.getTime() - START_DATE.getTime()) / (1000 * 60 * 60 * 24));
-      const lunarMonth = (Math.floor(daysSinceStart / 28) % 13) + 1;
-      const lunarYear = Math.floor(daysSinceStart / (28 * 13)) + 1;
-      return `Corgi Month ${lunarMonth}, Year ${lunarYear}`;
-    }
-
-    function getMoonPhase(day) {
-      if (day === 1) return "🌑"; // New Moon
-      if (day < 8) return "🌒"; // Waxing Crescent
-      if (day === 8) return "🌓"; // First Quarter
-      if (day < 15) return "🌔"; // Waxing Gibbous
-      if (day === 15) return "🌕"; // Full Moon
-      if (day < 22) return "🌖"; // Waning Gibbous
-      if (day === 22) return "🌗"; // Last Quarter
-      return "🌘"; // Waning Crescent
-    }
-
-    function getMoonPhaseName(day) {
-      if (day === 1) return "New Moon"; 
-      if (day < 8) return "Waxing Crescent"; 
-      if (day === 8) return "First Quarter"; 
-      if (day < 15) return "Waxing Gibbous"; 
-      if (day === 15) return "Full Moon"; 
-      if (day < 22) return "Waning Gibbous"; 
-      if (day === 22) return "Last Quarter"; 
-      return "Waning Crescent"; 
-    }
-
-    // Enhanced corgi mood function with more specific and engaging moods
-    function getCorgiMood(day) {
-      const moods = {
-        newMoon: [
-          "Adventure Ready!",
-          "Super Curious",
-          "Explorer Mode",
-          "Peak Energy",
-          "Adventure Time"
-        ],
-        waxingCrescent: [
-          "Playful & Fun",
-          "Bouncy Joy",
-          "Happy Zoomies",
-          "Tail Wags",
-          "Active & Bright"
-        ],
-        firstQuarter: [
-          "Social Time",
-          "Party Pup",
-          "Friend Mode",
-          "Play Ready",
-          "Extra Social"
-        ],
-        waxingGibbous: [
-          "Alert & Sharp",
-          "Keen & Quick",
-          "Fast Learner",
-          "Focused Up",
-          "Smart Cookie"
-        ],
-        fullMoon: [
-          "Zen Pup",
-          "Balanced",
-          "Peace Mode",
-          "Happy Calm",
-          "Content"
-        ],
-        waningGibbous: [
-          "Thoughtful",
-          "Gentle Mind",
-          "Wise Soul",
-          "Present",
-          "Mindful"
-        ],
-        lastQuarter: [
-          "Quiet Mind",
-          "Deep Think",
-          "Calm Watch",
-          "Observant",
-          "Serene"
-        ],
-        waningCrescent: [
-          "Rest Mode",
-          "Dreamy",
-          "Recharge",
-          "Peaceful",
-          "Relaxed"
-        ]
-      };
-
-      let phase;
-      if (day === 1) phase = "newMoon";
-      else if (day < 8) phase = "waxingCrescent";
-      else if (day === 8) phase = "firstQuarter";
-      else if (day < 15) phase = "waxingGibbous";
-      else if (day === 15) phase = "fullMoon";
-      else if (day < 22) phase = "waningGibbous";
-      else if (day === 22) phase = "lastQuarter";
-      else phase = "waningCrescent";
-
-      const selectedMoods = moods[phase];
-      return selectedMoods[Math.floor(Math.random() * selectedMoods.length)];
-    }
-
-    // Enhanced activity suggestions with more variations and mood matching
-    function getActivitySuggestion(day) {
-      const activities = {
-        energetic: [
-          "Agility Training",
-          "Beach Run",
-          "Dog Park Time",
-          "Hiking Trip",
-          "Frisbee Play",
-          "Splash Time",
-          "Obstacle Fun",
-          "Morning Jog",
-          "Fetch Games",
-          "Playdate"
-        ],
-        moderate: [
-          "Nature Walk",
-          "Training Time",
-          "Scent Games",
-          "Toy Play",
-          "Garden Time",
-          "Fetch Fun",
-          "Balance Work",
-          "Tug Games",
-          "Hide & Seek",
-          "Puzzle Time"
-        ],
-        calm: [
-          "Brush Time",
-          "Gentle Massage",
-          "Garden Rest",
-          "Slow Walk",
-          "Cuddle Time",
-          "Stretching",
-          "Porch Sit",
-          "Quiet Bond",
-          "Soft Play",
-          "Meditation"
-        ]
-      };
-
-      // Determine activity intensity based on lunar phase
-      let intensity;
-      if (day === 1 || day === 8 || (day > 1 && day < 15)) {
-        intensity = "energetic"; // Waxing phase - higher energy
-      } else if (day === 15 || (day > 15 && day < 22)) {
-        intensity = "moderate"; // Waning gibbous - moderate energy
-      } else {
-        intensity = "calm"; // Waning crescent - calmer energy
+        return dayElement;
       }
 
-      const selectedActivities = activities[intensity];
-      return selectedActivities[Math.floor(Math.random() * selectedActivities.length)];
-    }
-
-    // Date utility functions
-    function addDays(date, days) {
-      const result = new Date(date);
-      result.setDate(result.getDate() + days);
-      return result;
-    }
-
-    function startOfWeek(date, options = { weekStartsOn: 6 }) {
-      const result = new Date(date);
-      const day = result.getDay();
-      const diff = (day < options.weekStartsOn ? 7 : 0) + day - options.weekStartsOn;
-      result.setDate(result.getDate() - diff);
-      return result;
-    }
-
-    function formatDate(date, format) {
-      const d = new Date(date);
-
-      // Simple date formatter
-      switch (format) {
-        case "d":
-          return d.getDate();
-        case "EEE":
-          return ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"][d.getDay()];
-        case "MMM":
-          return ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"][d.getMonth()];
-        default:
-          return d.toString();
+      // Helper functions
+      function getLunarMonthYear(date) {
+        const daysSinceStart = Math.floor((date.getTime() - START_DATE.getTime()) / (1000 * 60 * 60 * 24));
+        const lunarMonth = (Math.floor(daysSinceStart / 28) % 13) + 1;
+        const lunarYear = Math.floor(daysSinceStart / (28 * 13)) + 1;
+        return `Corgi Month ${lunarMonth}, Year ${lunarYear}`;
       }
-    }
-  });
-</script>
+
+      function getMoonPhase(day) {
+        if (day === 1) return "🌑"; // New Moon
+        if (day < 8) return "🌒"; // Waxing Crescent
+        if (day === 8) return "🌓"; // First Quarter
+        if (day < 15) return "🌔"; // Waxing Gibbous
+        if (day === 15) return "🌕"; // Full Moon
+        if (day < 22) return "🌖"; // Waning Gibbous
+        if (day === 22) return "🌗"; // Last Quarter
+        return "🌘"; // Waning Crescent
+      }
+
+      function getMoonPhaseName(day) {
+        if (day === 1) return "New Moon"; 
+        if (day < 8) return "Waxing Crescent"; 
+        if (day === 8) return "First Quarter"; 
+        if (day < 15) return "Waxing Gibbous"; 
+        if (day === 15) return "Full Moon"; 
+        if (day < 22) return "Waning Gibbous"; 
+        if (day === 22) return "Last Quarter"; 
+        return "Waning Crescent"; 
+      }
+
+      // Enhanced corgi mood function with more specific and engaging moods
+      function getCorgiMood(day) {
+        const moods = {
+          newMoon: [
+            "Adventure Ready!",
+            "Super Curious",
+            "Explorer Mode",
+            "Peak Energy",
+            "Adventure Time"
+          ],
+          waxingCrescent: [
+            "Playful & Fun",
+            "Bouncy Joy",
+            "Happy Zoomies",
+            "Tail Wags",
+            "Active & Bright"
+          ],
+          firstQuarter: [
+            "Social Time",
+            "Party Pup",
+            "Friend Mode",
+            "Play Ready",
+            "Extra Social"
+          ],
+          waxingGibbous: [
+            "Alert & Sharp",
+            "Keen & Quick",
+            "Fast Learner",
+            "Focused Up",
+            "Smart Cookie"
+          ],
+          fullMoon: [
+            "Zen Pup",
+            "Balanced",
+            "Peace Mode",
+            "Happy Calm",
+            "Content"
+          ],
+          waningGibbous: [
+            "Thoughtful",
+            "Gentle Mind",
+            "Wise Soul",
+            "Present",
+            "Mindful"
+          ],
+          lastQuarter: [
+            "Quiet Mind",
+            "Deep Think",
+            "Calm Watch",
+            "Observant",
+            "Serene"
+          ],
+          waningCrescent: [
+            "Rest Mode",
+            "Dreamy",
+            "Recharge",
+            "Peaceful",
+            "Relaxed"
+          ]
+        };
+
+        let phase;
+        if (day === 1) phase = "newMoon";
+        else if (day < 8) phase = "waxingCrescent";
+        else if (day === 8) phase = "firstQuarter";
+        else if (day < 15) phase = "waxingGibbous";
+        else if (day === 15) phase = "fullMoon";
+        else if (day < 22) phase = "waningGibbous";
+        else if (day === 22) phase = "lastQuarter";
+        else phase = "waningCrescent";
+
+        const selectedMoods = moods[phase];
+        return selectedMoods[Math.floor(Math.random() * selectedMoods.length)];
+      }
+
+      // Enhanced activity suggestions with more variations and mood matching
+      function getActivitySuggestion(day) {
+        const activities = {
+          energetic: [
+            "Agility Training",
+            "Beach Run",
+            "Dog Park Time",
+            "Hiking Trip",
+            "Frisbee Play",
+            "Splash Time",
+            "Obstacle Fun",
+            "Morning Jog",
+            "Fetch Games",
+            "Playdate"
+          ],
+          moderate: [
+            "Nature Walk",
+            "Training Time",
+            "Scent Games",
+            "Toy Play",
+            "Garden Time",
+            "Fetch Fun",
+            "Balance Work",
+            "Tug Games",
+            "Hide & Seek",
+            "Puzzle Time"
+          ],
+          calm: [
+            "Brush Time",
+            "Gentle Massage",
+            "Garden Rest",
+            "Slow Walk",
+            "Cuddle Time",
+            "Stretching",
+            "Porch Sit",
+            "Quiet Bond",
+            "Soft Play",
+            "Meditation"
+          ]
+        };
+
+        // Determine activity intensity based on lunar phase
+        let intensity;
+        if (day === 1 || day === 8 || (day > 1 && day < 15)) {
+          intensity = "energetic"; // Waxing phase - higher energy
+        } else if (day === 15 || (day > 15 && day < 22)) {
+          intensity = "moderate"; // Waning gibbous - moderate energy
+        } else {
+          intensity = "calm"; // Waning crescent - calmer energy
+        }
+
+        const selectedActivities = activities[intensity];
+        return selectedActivities[Math.floor(Math.random() * selectedActivities.length)];
+      }
+
+      // Date utility functions
+      function addDays(date, days) {
+        const result = new Date(date);
+        result.setDate(result.getDate() + days);
+        return result;
+      }
+
+      function startOfWeek(date, options = { weekStartsOn: 6 }) {
+        const result = new Date(date);
+        const day = result.getDay();
+        const diff = (day < options.weekStartsOn ? 7 : 0) + day - options.weekStartsOn;
+        result.setDate(result.getDate() - diff);
+        return result;
+      }
+
+      function formatDate(date, format) {
+        const d = new Date(date);
+
+        // Simple date formatter
+        switch (format) {
+          case "d":
+            return d.getDate();
+          case "EEE":
+            return ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"][d.getDay()];
+          case "MMM":
+            return ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"][d.getMonth()];
+          default:
+            return d.toString();
+        }
+      }
+    });
+  </script>
+</body>
+</html>
 
