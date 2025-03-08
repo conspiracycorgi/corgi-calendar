@@ -4,7 +4,7 @@
 <body>
   <a class="skip-link" href="#main-content">Skip to content</a>
   
-  <header class="site-header">
+  <header class="site-header sr-only">
     <div class="container">
       <div class="site-branding">
         <a href="{{ site.baseurl }}/" class="site-logo">
@@ -431,6 +431,30 @@
       }
     });
   </script>
+  <style>
+    .day-header-image {
+      width: 60px;
+      height: 60px;
+      margin-bottom: 0.5rem;
+      object-fit: contain;
+      border: 2px solid #fb923c;
+      border-radius: 0.75rem;
+      padding: 0.5rem;
+      background-color: rgba(31, 41, 55, 0.5);
+      transition: transform 0.2s ease;
+    }
+
+    .day-header-image:hover {
+      transform: scale(1.05);
+    }
+
+    .day-header {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 0.5rem;
+    }
+  </style>
 </body>
 </html>
 
